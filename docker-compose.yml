@@ -1,0 +1,29 @@
+version: '2.4'
+services:
+  api:
+    build: ./backend
+    ports:
+    - "8000:8000"
+    volumes:
+    - ./api:/api
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NODE_ENV=development
+    environment:
+      - NODE_ENV=development
+    tty: true
+    ports:
+      - '19006:19006'
+      - '19001:19001'
+      - '19002:19002'
+    volumes:
+      - ./frontend:/opt/frontend/app:delegated
+      - ./frontend/package.json:/opt/frontend/package.json
+      - ./frontend/package-lock.json:/opt/frontend/package-lock.json
+      # - notused:/opt/frontend/app/node_modules
+
+  
